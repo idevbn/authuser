@@ -1,4 +1,4 @@
-package com.ead.authuser.security;
+package com.ead.authuser.configs.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

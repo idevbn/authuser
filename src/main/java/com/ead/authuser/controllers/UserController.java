@@ -2,8 +2,8 @@ package com.ead.authuser.controllers;
 
 import com.ead.authuser.dtos.UserDTO;
 import com.ead.authuser.models.UserModel;
-import com.ead.authuser.security.AuthenticationCurrentUserService;
-import com.ead.authuser.security.UserDetailsImpl;
+import com.ead.authuser.configs.security.AuthenticationCurrentUserService;
+import com.ead.authuser.configs.security.UserDetailsImpl;
 import com.ead.authuser.services.UserService;
 import com.ead.authuser.specifications.SpecificationTemplate;
 import com.fasterxml.jackson.annotation.JsonView;

@@ -8,7 +8,7 @@ import com.ead.authuser.enums.UserStatus;
 import com.ead.authuser.enums.UserType;
 import com.ead.authuser.models.RoleModel;
 import com.ead.authuser.models.UserModel;
-import com.ead.authuser.security.JwtProvider;
+import com.ead.authuser.configs.security.JwtProvider;
 import com.ead.authuser.services.RoleService;
 import com.ead.authuser.services.UserService;
 import com.fasterxml.jackson.annotation.JsonView;

@@ -1,4 +1,4 @@
-package com.ead.authuser.security;
+package com.ead.authuser.configs.security;
 
 import com.ead.authuser.models.UserModel;
 import com.ead.authuser.repositories.UserRepository;
