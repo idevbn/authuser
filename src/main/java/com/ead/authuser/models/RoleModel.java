@@ -18,8 +18,6 @@ import java.util.UUID;
 @Table(name = "tb_roles")
 public class RoleModel implements GrantedAuthority, Serializable {
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID roleId;
