@@ -59,7 +59,7 @@ public class AuthController {
             @RequestBody
             @Validated(UserDTO.UserView.RegistrationPost.class)
             @JsonView(UserDTO.UserView.RegistrationPost.class) final UserDTO userDTO
-            ) {
+    ) {
         log.debug("POST registerUser userDTO received {}", userDTO.toString());
 
         if (this.userService.existsByUserName(userDTO.getUsername())) {
@@ -78,7 +78,7 @@ public class AuthController {
                     .body("Error: Email is already taken!");
         }
 
-        final RoleModel roleModel = this.roleService.findByRoleName(RoleType.ROLE_STUDENT)
+        final RoleModel roleModel = this.roleService.findByRoleName(RoleType.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is Not Found."));
 
         var userModel = new UserModel();
@@ -87,7 +87,7 @@ public class AuthController {
 
         BeanUtils.copyProperties(userDTO, userModel);
         userModel.setUserStatus(UserStatus.ACTIVE);
-        userModel.setUserType(UserType.STUDENT);
+        userModel.setUserType(UserType.USER);
         userModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
         userModel.getRoles().add(roleModel);
