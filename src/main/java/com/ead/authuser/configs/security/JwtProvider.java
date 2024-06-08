@@ -1,12 +1,16 @@
 package com.ead.authuser.configs.security;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SecurityException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -33,18 +37,21 @@ public class JwtProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
+        final SecretKey key = Keys.hmacShaKeyFor(this.jwtSecret.getBytes(StandardCharsets.UTF_8));
+
         return Jwts.builder()
                 .setSubject(userPrincipal.getUserId().toString())
                 .claim("roles", roles)
                 .setIssuedAt(Date.from(issuedAt))
                 .setExpiration(Date.from(issuedAt.plus(Long.parseLong(this.jwtExpirationMs), ChronoUnit.MILLIS)))
-                .signWith(SignatureAlgorithm.HS512, this.jwtSecret)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
 
     public String getSubjectJwt(final String token) {
-        return Jwts.parser()
-                .setSigningKey(this.jwtSecret)
+        return Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(this.jwtSecret.getBytes(StandardCharsets.UTF_8)))
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
@@ -52,10 +59,13 @@ public class JwtProvider {
 
     public boolean validateJwt(final String authToken) {
         try {
-            Jwts.parser().setSigningKey(this.jwtSecret).parseClaimsJws(authToken);
+            Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(this.jwtSecret.getBytes(StandardCharsets.UTF_8)))
+                    .build()
+                    .parseClaimsJws(authToken);
 
             return true;
-        } catch (final SignatureException e) {
+        } catch (final SecurityException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());
         } catch (final MalformedJwtException e) {
             log.error("Invalid JWT token: {}", e.getMessage());
