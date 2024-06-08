@@ -4,12 +4,12 @@ import com.ead.authuser.controllers.AuthController;
 import com.ead.authuser.validations.UsernameConstraint;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.Data;
-import org.hibernate.validator.constraints.br.CPF;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
+import org.hibernate.validator.constraints.br.CPF;
+
 import java.util.UUID;
 
 /**
